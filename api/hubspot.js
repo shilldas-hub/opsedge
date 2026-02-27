@@ -26,72 +26,78 @@ export default async function handler(req, res) {
             formattedWebsite = 'https://' + formattedWebsite;
         }
 
-        // 1. Create or Find the Company
-        let companyId = null;
+        // 1. Create or Find the Contact
+        // HubSpot requires that a Lead is associated to a Contact (LEAD_TO_PRIMARY_CONTACT) 
+        // to be successfully created.
+        let contactId = null;
 
-        const companyPayload = {
+        const contactPayload = {
             properties: {
-                name: data.companyName,
-                domain: formattedWebsite
+                email: data.email,
+                firstname: data.name?.split(' ')[0] || '',
+                lastname: data.name?.split(' ').slice(1).join(' ') || '',
+                company: data.companyName,
+                website: data.websiteUrl
             }
         };
 
-        const companyRes = await fetch('https://api.hubapi.com/crm/v3/objects/companies', {
+        const contactRes = await fetch('https://api.hubapi.com/crm/v3/objects/contacts', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             },
-            body: JSON.stringify(companyPayload)
+            body: JSON.stringify(contactPayload)
         });
 
-        const companyResult = await companyRes.json();
+        const contactResult = await contactRes.json();
 
-        if (companyRes.ok) {
-            companyId = companyResult.id;
-        } else if (companyRes.status === 409 && companyResult.message.includes("Existing ID:")) {
-            const match = companyResult.message.match(/Existing ID: (\d+)/);
-            if (match) companyId = match[1];
+        if (contactRes.ok) {
+            contactId = contactResult.id;
+        } else if (contactRes.status === 409 && contactResult.message.includes("Existing ID:")) {
+            const match = contactResult.message.match(/Existing ID: (\d+)/);
+            if (match) contactId = match[1];
         }
 
-        if (!companyId && formattedWebsite) {
-            // Fallback search if creation failed for another reason (e.g. domain already exists but 409 message format differs)
-            const searchRes = await fetch('https://api.hubapi.com/crm/v3/objects/companies/search', {
+        if (!contactId && data.email) {
+            // Fallback search if creation failed and the error message format is slightly different
+            const searchRes = await fetch('https://api.hubapi.com/crm/v3/objects/contacts/search', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify({
-                    filterGroups: [{ filters: [{ propertyName: 'domain', operator: 'EQ', value: formattedWebsite }] }]
+                    filterGroups: [{ filters: [{ propertyName: 'email', operator: 'EQ', value: data.email }] }]
                 })
             });
             const searchJson = await searchRes.json();
             if (searchJson.results && searchJson.results.length > 0) {
-                companyId = searchJson.results[0].id;
+                contactId = searchJson.results[0].id;
             }
         }
 
-        if (!companyId) {
-            console.error("Failed to create/find company:", companyResult);
-            return res.status(500).json({ message: "Failed to create or find company", error: companyResult });
+        if (!contactId) {
+            console.error("Failed to create/find contact:", contactResult);
+            return res.status(500).json({ message: "Failed to create or find contact", error: contactResult });
         }
 
-        // 2. Fetch Association Type Label
+        // 2. Fetch Association Type Label for Contacts to Leads
         let assocTypeId = null;
         let assocDebugLog = null;
         try {
-            const assocRes = await fetch('https://api.hubapi.com/crm/v4/associations/leads/companies/labels', {
+            // Correct API endpoint for Lead-to-Contact labels
+            const assocRes = await fetch('https://api.hubapi.com/crm/v4/associations/leads/contacts/labels', {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             const assocJson = await assocRes.json();
             assocDebugLog = assocJson;
 
             if (assocJson.results && assocJson.results.length > 0) {
-                // Find EXACT match for LEAD_TO_PRIMARY_COMPANY
+                // Find EXACT match for LEAD_TO_PRIMARY_CONTACT
                 const primary = assocJson.results.find(r =>
-                    (r.label && r.label === 'LEAD_TO_PRIMARY_COMPANY') ||
-                    (r.name && r.name === 'LEAD_TO_PRIMARY_COMPANY')
+                    (r.label && r.label === 'LEAD_TO_PRIMARY_CONTACT') ||
+                    (r.name && r.name === 'LEAD_TO_PRIMARY_CONTACT')
                 );
 
                 if (primary) {
@@ -104,7 +110,7 @@ export default async function handler(req, res) {
             console.error("Could not fetch association labels", e);
         }
 
-        // 3. Create the Lead with the required Company Association
+        // 3. Create the Lead with the required Contact Association
         const hubspotPayload = {
             properties: {
                 hs_lead_name: data.name,
@@ -119,12 +125,12 @@ export default async function handler(req, res) {
             associations: [
                 {
                     to: {
-                        id: companyId
+                        id: contactId
                     },
                     types: [
                         {
                             associationCategory: "HUBSPOT_DEFINED",
-                            associationTypeId: assocTypeId || 286
+                            associationTypeId: assocTypeId || 284 // 284 is the standard ID for lead-to-contact according to Hubspot community
                         }
                     ]
                 }

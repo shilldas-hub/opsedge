@@ -48,9 +48,36 @@ const BookingSection = () => {
     formData.email.trim() &&
     formData.name.trim();
 
-  const handleFormSubmit = (e: React.FormEvent) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+
+  const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (isFormValid) setFormSubmitted(true);
+    if (!isFormValid) return;
+
+    setIsSubmitting(true);
+    setSubmitError("");
+
+    try {
+      const response = await fetch('/api/hubspot', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to submit form");
+      }
+
+      setFormSubmitted(true);
+    } catch (err) {
+      setSubmitError("There was an error saving your details. Please try again.");
+      console.error(err);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleBook = () => {
@@ -226,13 +253,17 @@ const BookingSection = () => {
               <span>This session is intended for B2B service companies with an active sales process and annual revenue above ₹1Cr.</span>
             </label>
 
+            {submitError && (
+              <p className="text-destructive text-sm font-medium mt-2">{submitError}</p>
+            )}
+
             <button
               type="submit"
-              disabled={!isFormValid}
+              disabled={!isFormValid || isSubmitting}
               className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-primary text-primary-foreground font-heading font-semibold text-sm rounded hover:opacity-90 transition-opacity disabled:opacity-40 disabled:cursor-not-allowed"
             >
-              Continue to Schedule
-              <ArrowRight className="w-4 h-4" />
+              {isSubmitting ? "Submitting..." : "Continue to Schedule"}
+              {!isSubmitting && <ArrowRight className="w-4 h-4" />}
             </button>
           </form>
         ) : (
@@ -279,13 +310,12 @@ const BookingSection = () => {
                         setSelectedDate(dateObj);
                         setSelectedTime("");
                       }}
-                      className={`py-2 text-sm rounded transition-colors ${
-                        isSelected
+                      className={`py-2 text-sm rounded transition-colors ${isSelected
                           ? "bg-primary text-primary-foreground font-semibold"
                           : isAvailable
-                          ? "text-background/80 hover:bg-background/10"
-                          : "text-background/20 cursor-not-allowed"
-                      }`}
+                            ? "text-background/80 hover:bg-background/10"
+                            : "text-background/20 cursor-not-allowed"
+                        }`}
                     >
                       {day}
                     </button>
@@ -306,11 +336,10 @@ const BookingSection = () => {
                     <button
                       key={slot}
                       onClick={() => setSelectedTime(slot)}
-                      className={`px-3 py-2 text-xs rounded border transition-colors ${
-                        selectedTime === slot
+                      className={`px-3 py-2 text-xs rounded border transition-colors ${selectedTime === slot
                           ? "bg-primary text-primary-foreground border-primary"
                           : "border-background/20 text-background/70 hover:border-background/40"
-                      }`}
+                        }`}
                     >
                       {slot}
                     </button>

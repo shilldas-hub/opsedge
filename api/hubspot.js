@@ -106,6 +106,8 @@ export default async function handler(req, res) {
                     assocTypeId = assocJson.results[0].typeId;
                 }
             }
+            console.log("== AVAILABLE ASSOCIATION LABELS ==", JSON.stringify(assocJson.results, null, 2));
+            console.log("== SELECTED ASSOC TYPE ID ==", assocTypeId);
         } catch (e) {
             console.error("Could not fetch association labels", e);
         }
@@ -136,6 +138,8 @@ export default async function handler(req, res) {
                 }
             ]
         };
+
+        console.log("== FINAL LEAD PAYLOAD ==", JSON.stringify(hubspotPayload, null, 2));
 
         const response = await fetch('https://api.hubapi.com/crm/v3/objects/leads', {
             method: 'POST',

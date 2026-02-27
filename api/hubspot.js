@@ -26,7 +26,78 @@ export default async function handler(req, res) {
             formattedWebsite = 'https://' + formattedWebsite;
         }
 
-        // Map your frontend form data to HubSpot Lead properties based on user's schema
+        // 1. Create or Find the Company
+        let companyId = null;
+
+        const companyPayload = {
+            properties: {
+                name: data.companyName,
+                domain: formattedWebsite
+            }
+        };
+
+        const companyRes = await fetch('https://api.hubapi.com/crm/v3/objects/companies', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(companyPayload)
+        });
+
+        const companyResult = await companyRes.json();
+
+        if (companyRes.ok) {
+            companyId = companyResult.id;
+        } else if (companyRes.status === 409 && companyResult.message.includes("Existing ID:")) {
+            const match = companyResult.message.match(/Existing ID: (\d+)/);
+            if (match) companyId = match[1];
+        }
+
+        if (!companyId && formattedWebsite) {
+            // Fallback search if creation failed for another reason (e.g. domain already exists but 409 message format differs)
+            const searchRes = await fetch('https://api.hubapi.com/crm/v3/objects/companies/search', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    filterGroups: [{ filters: [{ propertyName: 'domain', operator: 'EQ', value: formattedWebsite }] }]
+                })
+            });
+            const searchJson = await searchRes.json();
+            if (searchJson.results && searchJson.results.length > 0) {
+                companyId = searchJson.results[0].id;
+            }
+        }
+
+        if (!companyId) {
+            console.error("Failed to create/find company:", companyResult);
+            return res.status(500).json({ message: "Failed to create or find company", error: companyResult });
+        }
+
+        // 2. Fetch Association Type Label
+        let assocTypeId = 286; // Fallback integer
+        try {
+            const assocRes = await fetch('https://api.hubapi.com/crm/v4/associations/leads/companies/labels', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const assocJson = await assocRes.json();
+            if (assocJson.results && assocJson.results.length > 0) {
+                // Try to find one labeled "Primary" or "LEAD_TO_PRIMARY_COMPANY" if it exists
+                const primary = assocJson.results.find(r => r.label && r.label.toUpperCase().includes('PRIMARY'));
+                if (primary) {
+                    assocTypeId = primary.typeId;
+                } else {
+                    assocTypeId = assocJson.results[0].typeId;
+                }
+            }
+        } catch (e) {
+            console.error("Could not fetch association labels", e);
+        }
+
+        // 3. Create the Lead with the required Company Association
         const hubspotPayload = {
             properties: {
                 hs_lead_name: data.name,
@@ -37,7 +108,20 @@ export default async function handler(req, res) {
                 primary_revenue_bottleneck: data.bottleneck,
                 qualified: data.qualified ? "Yes" : "No",
                 work_email: data.email
-            }
+            },
+            associations: [
+                {
+                    to: {
+                        id: companyId
+                    },
+                    types: [
+                        {
+                            associationCategory: "HUBSPOT_DEFINED",
+                            associationTypeId: assocTypeId
+                        }
+                    ]
+                }
+            ]
         };
 
         const response = await fetch('https://api.hubapi.com/crm/v3/objects/leads', {

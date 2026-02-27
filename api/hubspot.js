@@ -78,15 +78,22 @@ export default async function handler(req, res) {
         }
 
         // 2. Fetch Association Type Label
-        let assocTypeId = 286; // Fallback integer
+        let assocTypeId = null;
+        let assocDebugLog = null;
         try {
             const assocRes = await fetch('https://api.hubapi.com/crm/v4/associations/leads/companies/labels', {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             const assocJson = await assocRes.json();
+            assocDebugLog = assocJson;
+
             if (assocJson.results && assocJson.results.length > 0) {
-                // Try to find one labeled "Primary" or "LEAD_TO_PRIMARY_COMPANY" if it exists
-                const primary = assocJson.results.find(r => r.label && r.label.toUpperCase().includes('PRIMARY'));
+                // Find EXACT match for LEAD_TO_PRIMARY_COMPANY
+                const primary = assocJson.results.find(r =>
+                    (r.label && r.label === 'LEAD_TO_PRIMARY_COMPANY') ||
+                    (r.name && r.name === 'LEAD_TO_PRIMARY_COMPANY')
+                );
+
                 if (primary) {
                     assocTypeId = primary.typeId;
                 } else {
@@ -117,7 +124,7 @@ export default async function handler(req, res) {
                     types: [
                         {
                             associationCategory: "HUBSPOT_DEFINED",
-                            associationTypeId: assocTypeId
+                            associationTypeId: assocTypeId || 286
                         }
                     ]
                 }
@@ -137,7 +144,12 @@ export default async function handler(req, res) {
 
         if (!response.ok) {
             console.error('HubSpot API Error:', result);
-            return res.status(response.status).json({ message: 'Error submitting to HubSpot', error: result });
+            return res.status(response.status).json({
+                message: 'Error submitting to HubSpot',
+                error: result,
+                failedAssociationIdTested: assocTypeId,
+                availableAssociationLabels: assocDebugLog
+            });
         }
 
         return res.status(200).json({ message: 'Lead successfully submitted', result });

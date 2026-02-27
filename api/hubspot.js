@@ -13,13 +13,26 @@ export default async function handler(req, res) {
     try {
         const data = req.body;
 
+        // HubSpot expects specific formatting for Revenue Range: "1-5 Cr", "5-25 Cr", "25 Cr+"
+        // Frontend provides: "₹1-5Cr", "₹5-25Cr", "₹25Cr+"
+        let formattedRevenue = data.revenueRange;
+        if (formattedRevenue === "₹1-5Cr") formattedRevenue = "1-5 Cr";
+        if (formattedRevenue === "₹5-25Cr") formattedRevenue = "5-25 Cr";
+        if (formattedRevenue === "₹25Cr+") formattedRevenue = "25 Cr+";
+
+        // Ensure website URL has http/https prefix
+        let formattedWebsite = data.websiteUrl || '';
+        if (formattedWebsite && !/^https?:\/\//i.test(formattedWebsite)) {
+            formattedWebsite = 'https://' + formattedWebsite;
+        }
+
         // Map your frontend form data to HubSpot Lead properties based on user's schema
         const hubspotPayload = {
             properties: {
                 hs_lead_name: data.name,
                 company_name: data.companyName,
-                company_domain: data.websiteUrl,
-                revenue_range: data.revenueRange,
+                company_domain: formattedWebsite,
+                revenue_range: formattedRevenue,
                 crm_used: data.crmUsed,
                 primary_revenue_bottleneck: data.bottleneck,
                 qualified: data.qualified ? "Yes" : "No",

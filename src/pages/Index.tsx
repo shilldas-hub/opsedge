@@ -20,9 +20,8 @@ const StickyHeader = () => {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-200 ${
-        scrolled ? "bg-background/95 backdrop-blur border-b border-border shadow-sm" : "bg-transparent"
-      }`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-200 ${scrolled ? "bg-background/95 backdrop-blur border-b border-border shadow-sm" : "bg-transparent"
+        }`}
     >
       <div className="container flex items-center justify-between h-16">
         <span className="font-heading text-xl font-bold tracking-tight text-foreground">
@@ -31,11 +30,10 @@ const StickyHeader = () => {
         <a
           href="#book-audit"
           onClick={scrollToBooking}
-          className={`inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium rounded transition-all ${
-            scrolled
+          className={`inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium rounded transition-all ${scrolled
               ? "bg-primary text-primary-foreground hover:opacity-90"
               : "bg-foreground text-background hover:opacity-90"
-          }`}
+            }`}
         >
           Book Audit
           <ArrowRight className="w-4 h-4" />
@@ -229,19 +227,17 @@ const Index = () => {
           <h2 className="font-heading text-2xl md:text-3xl font-bold mb-10 text-center">
             Systems We Work Inside
           </h2>
-          <div className="grid grid-cols-4 gap-6 mb-10">
+          <ul className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4 mb-10">
             {platforms.map((p) => (
-              <div
+              <li
                 key={p.name}
-                className="flex flex-col items-center gap-2"
+                className="flex items-center gap-2 text-lg md:text-xl font-medium text-foreground"
               >
-                <div className="w-14 h-14 border border-border rounded flex items-center justify-center bg-background">
-                  <span className="font-heading text-xl font-bold text-foreground">{p.letter}</span>
-                </div>
-                <span className="text-xs text-muted-foreground">{p.name}</span>
-              </div>
+                <span className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />
+                {p.name}
+              </li>
             ))}
-          </div>
+          </ul>
           <div className="text-sm text-muted-foreground leading-relaxed space-y-3 text-center">
             <p>These are platforms we frequently architect and optimize inside.</p>
             <p>However, OpsEdge is not limited to specific tools.</p>
@@ -291,7 +287,7 @@ const Index = () => {
                 aria-label="LinkedIn"
               >
                 <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                  <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
                 </svg>
               </a>
             </div>

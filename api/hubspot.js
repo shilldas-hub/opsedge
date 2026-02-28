@@ -88,8 +88,8 @@ export default async function handler(req, res) {
 
             if (assocJson.results && assocJson.results.length > 0) {
                 const primary = assocJson.results.find(r =>
-                    (r.label && r.label === 'LEAD_TO_PRIMARY_COMPANY') ||
-                    (r.name && r.name === 'LEAD_TO_PRIMARY_COMPANY')
+                    (r.label === 'LEAD_TO_PRIMARY_COMPANY' || r.label === 'Primary') ||
+                    (r.name === 'LEAD_TO_PRIMARY_COMPANY')
                 );
 
                 if (primary) {

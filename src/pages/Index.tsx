@@ -85,10 +85,10 @@ const steps = [
 ];
 
 const platforms = [
-  { name: "Zoho", letter: "Z" },
-  { name: "HubSpot", letter: "H" },
-  { name: "Make", letter: "M" },
-  { name: "n8n", letter: "n" },
+  { name: "CRM", letter: "C" },
+  { name: "IPaaS Automation", letter: "I" },
+  { name: "Reporting Systems", letter: "R" },
+  { name: "Custom Workflows", letter: "W" },
 ];
 
 const Index = () => {

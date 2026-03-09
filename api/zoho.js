@@ -73,7 +73,8 @@ export default async function handler(req, res) {
         const zohoPayload = {
             data: [
                 {
-                    Company: data.companyName,
+                    Company: data.companyName, // Standard Zoho system requirement
+                    Company_Name: data.companyName, // Your custom API name
                     Last_Name: data.name, // Zoho requires Last_Name on Leads.
                     Email: data.email,
                     Website: formattedWebsite,

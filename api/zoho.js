@@ -80,7 +80,7 @@ export default async function handler(req, res) {
                     Company_Domain: data.companySize,
                     Company_LinkedIn1: data.companyLinkedin,
                     Designation: data.designation,
-                    Annual_Revenue: data.revenueRange ? parseInt(data.revenueRange.replace(/\D/g, '')) * 10000000 : null,
+                    //Annual_Revenue: data.revenueRange ? parseInt(data.revenueRange.replace(/\D/g, '')) * 10000000 : null,
                     Revenue_Range: data.revenueRange,
                     CRM_Used: data.crmUsed,
                     Description: `Primary Bottleneck: ${data.bottleneck}\nQualified: ${data.qualified ? 'Yes' : 'No'}`,

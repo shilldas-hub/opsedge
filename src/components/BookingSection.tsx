@@ -59,7 +59,7 @@ const BookingSection = () => {
     setSubmitError("");
 
     try {
-      const response = await fetch('/api/hubspot', {
+      const response = await fetch('/api/zoho', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -311,10 +311,10 @@ const BookingSection = () => {
                         setSelectedTime("");
                       }}
                       className={`py-2 text-sm rounded transition-colors ${isSelected
-                          ? "bg-primary text-primary-foreground font-semibold"
-                          : isAvailable
-                            ? "text-background/80 hover:bg-background/10"
-                            : "text-background/20 cursor-not-allowed"
+                        ? "bg-primary text-primary-foreground font-semibold"
+                        : isAvailable
+                          ? "text-background/80 hover:bg-background/10"
+                          : "text-background/20 cursor-not-allowed"
                         }`}
                     >
                       {day}
@@ -337,8 +337,8 @@ const BookingSection = () => {
                       key={slot}
                       onClick={() => setSelectedTime(slot)}
                       className={`px-3 py-2 text-xs rounded border transition-colors ${selectedTime === slot
-                          ? "bg-primary text-primary-foreground border-primary"
-                          : "border-background/20 text-background/70 hover:border-background/40"
+                        ? "bg-primary text-primary-foreground border-primary"
+                        : "border-background/20 text-background/70 hover:border-background/40"
                         }`}
                     >
                       {slot}

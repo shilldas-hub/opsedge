@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Database, Settings, BarChart, GitMerge } from "lucide-react";
 import { Link } from "react-router-dom";
 import BookingSection from "@/components/BookingSection";
 import ChatBot from "@/components/ChatBot";
@@ -85,10 +85,10 @@ const steps = [
 ];
 
 const platforms = [
-  { name: "CRM", letter: "C" },
-  { name: "IPaaS Automation", letter: "I" },
-  { name: "Reporting Systems", letter: "R" },
-  { name: "Custom Workflows", letter: "W" },
+  { name: "CRM", icon: Database },
+  { name: "IPaaS Automation", icon: Settings },
+  { name: "Reporting Systems", icon: BarChart },
+  { name: "Custom Workflows", icon: GitMerge },
 ];
 
 const Index = () => {
@@ -222,7 +222,7 @@ const Index = () => {
       </section>
 
       {/* Systems We Work Inside */}
-      <section className="py-20 md:py-28 bg-card">
+      <section className="py-20 md:py-28 bg-foreground text-background">
         <div className="container max-w-3xl">
           <h2 className="font-heading text-2xl md:text-3xl font-bold mb-10 text-center">
             Systems We Work Inside
@@ -231,10 +231,10 @@ const Index = () => {
             {platforms.map((p) => (
               <div
                 key={p.name}
-                className="flex flex-col items-center justify-center p-6 md:p-8 rounded-xl bg-background border border-border shadow-sm hover:border-primary/50 hover:shadow-md hover:-translate-y-1 transition-all duration-300 group"
+                className="flex flex-col items-center justify-center p-6 md:p-8 rounded-xl bg-background border border-border shadow-sm hover:border-primary/50 hover:shadow-md hover:-translate-y-1 transition-all duration-300 group text-center"
               >
                 <div className="w-12 h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                  <span className="font-heading text-xl font-bold">{p.letter}</span>
+                  <p.icon className="w-6 h-6" />
                 </div>
                 <span className="text-lg font-heading font-semibold text-foreground group-hover:text-primary transition-colors">
                   {p.name}
@@ -242,14 +242,14 @@ const Index = () => {
               </div>
             ))}
           </div>
-          <div className="text-sm text-muted-foreground leading-relaxed space-y-3 text-center">
+          <div className="text-sm text-background/70 leading-relaxed text-center space-y-3">
             <p>These are platforms we frequently architect and optimize inside.</p>
             <p>However, OpsEdge is not limited to specific tools.</p>
             <p>
               We analyze and optimize your existing technology stack - whether that includes CRM,
               automation tools, reporting systems, or custom workflows.
             </p>
-            <p className="font-medium text-foreground">
+            <p className="font-medium text-background">
               The focus is system performance, not tool preference.
             </p>
           </div>
@@ -258,7 +258,7 @@ const Index = () => {
 
       {/* Final CTA + Booking */}
       <div>
-        <section className="py-16 md:py-20 bg-foreground text-background">
+        <section className="py-16 md:py-20 bg-background text-foreground">
           <div className="container max-w-3xl text-center">
             <h2 className="font-heading text-3xl md:text-4xl font-bold mb-2">
               Stop Managing Leads.

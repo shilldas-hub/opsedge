@@ -67,12 +67,12 @@ const BookingSection = () => {
   };
 
   return (
-    <section id="book-audit" className="py-20 md:py-28 bg-foreground text-background">
+    <section id="book-audit" className="py-20 md:py-28 bg-background text-foreground">
       <div className="container max-w-4xl">
         <h2 className="font-heading text-2xl md:text-3xl font-bold mb-4 text-center">
           Book Your Revenue Systems Audit
         </h2>
-        <p className="text-center text-background/60 text-sm mb-12">
+        <p className="text-center text-muted-foreground text-sm mb-12">
           30-Minute Revenue Systems Audit - Monday to Friday, 10:00 AM to 5:00 PM
         </p>
 
@@ -80,24 +80,24 @@ const BookingSection = () => {
           <form onSubmit={handleFormSubmit} className="max-w-xl mx-auto space-y-5">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium mb-1.5 text-background/80">Full Name *</label>
+                <label className="block text-sm font-medium mb-1.5 text-foreground/90">Full Name *</label>
                 <input
                   type="text"
                   required
                   value={formData.name}
                   onChange={(e) => setFormData((p) => ({ ...p, name: e.target.value }))}
-                  className="w-full px-3 py-2.5 bg-background/10 border border-background/20 rounded text-sm text-background placeholder:text-background/40 focus:outline-none focus:border-primary"
+                  className="w-full px-3 py-2.5 bg-transparent border border-border rounded text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary"
                   placeholder="Your name"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1.5 text-background/80">Designation / Title *</label>
+                <label className="block text-sm font-medium mb-1.5 text-foreground/90">Designation / Title *</label>
                 <input
                   type="text"
                   required
                   value={formData.designation}
                   onChange={(e) => setFormData((p) => ({ ...p, designation: e.target.value }))}
-                  className="w-full px-3 py-2.5 bg-background/10 border border-background/20 rounded text-sm text-background placeholder:text-background/40 focus:outline-none focus:border-primary"
+                  className="w-full px-3 py-2.5 bg-transparent border border-border rounded text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary"
                   placeholder="e.g. Founder, VP of Sales"
                 />
               </div>
@@ -105,24 +105,24 @@ const BookingSection = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium mb-1.5 text-background/80">Email *</label>
+                <label className="block text-sm font-medium mb-1.5 text-foreground/90">Email *</label>
                 <input
                   type="email"
                   required
                   value={formData.email}
                   onChange={(e) => setFormData((p) => ({ ...p, email: e.target.value }))}
-                  className="w-full px-3 py-2.5 bg-background/10 border border-background/20 rounded text-sm text-background placeholder:text-background/40 focus:outline-none focus:border-primary"
+                  className="w-full px-3 py-2.5 bg-transparent border border-border rounded text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary"
                   placeholder="you@company.com"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1.5 text-background/80">Company LinkedIn *</label>
+                <label className="block text-sm font-medium mb-1.5 text-foreground/90">Company LinkedIn *</label>
                 <input
                   type="url"
                   required
                   value={formData.companyLinkedin}
                   onChange={(e) => setFormData((p) => ({ ...p, companyLinkedin: e.target.value }))}
-                  className="w-full px-3 py-2.5 bg-background/10 border border-background/20 rounded text-sm text-background placeholder:text-background/40 focus:outline-none focus:border-primary"
+                  className="w-full px-3 py-2.5 bg-transparent border border-border rounded text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary"
                   placeholder="https://linkedin.com/company/..."
                 />
               </div>
@@ -130,24 +130,24 @@ const BookingSection = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium mb-1.5 text-background/80">Company Name *</label>
+                <label className="block text-sm font-medium mb-1.5 text-foreground/90">Company Name *</label>
                 <input
                   type="text"
                   required
                   value={formData.companyName}
                   onChange={(e) => setFormData((p) => ({ ...p, companyName: e.target.value }))}
-                  className="w-full px-3 py-2.5 bg-background/10 border border-background/20 rounded text-sm text-background placeholder:text-background/40 focus:outline-none focus:border-primary"
+                  className="w-full px-3 py-2.5 bg-transparent border border-border rounded text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary"
                   placeholder="Company name"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1.5 text-background/80">Website URL *</label>
+                <label className="block text-sm font-medium mb-1.5 text-foreground/90">Website URL *</label>
                 <input
                   type="url"
                   required
                   value={formData.websiteUrl}
                   onChange={(e) => setFormData((p) => ({ ...p, websiteUrl: e.target.value }))}
-                  className="w-full px-3 py-2.5 bg-background/10 border border-background/20 rounded text-sm text-background placeholder:text-background/40 focus:outline-none focus:border-primary"
+                  className="w-full px-3 py-2.5 bg-transparent border border-border rounded text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary"
                   placeholder="https://yourcompany.com"
                 />
               </div>
@@ -155,21 +155,21 @@ const BookingSection = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium mb-1.5 text-background/80">Company Size *</label>
+                <label className="block text-sm font-medium mb-1.5 text-foreground/90">Company Size *</label>
                 <input
                   type="text"
                   required
                   value={formData.companySize}
                   onChange={(e) => setFormData((p) => ({ ...p, companySize: e.target.value }))}
-                  className="w-full px-3 py-2.5 bg-background/10 border border-background/20 rounded text-sm text-background placeholder:text-background/40 focus:outline-none focus:border-primary"
+                  className="w-full px-3 py-2.5 bg-transparent border border-border rounded text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary"
                   placeholder="e.g. 10-50, 50-200"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1.5 text-background/80">Revenue Range *</label>
+                <label className="block text-sm font-medium mb-1.5 text-foreground/90">Revenue Range *</label>
                 <div className="space-y-2">
                   {REVENUE_OPTIONS.map((opt) => (
-                    <label key={opt} className="flex items-center gap-2 text-sm cursor-pointer text-background/80 hover:text-background">
+                    <label key={opt} className="flex items-center gap-2 text-sm cursor-pointer text-muted-foreground hover:text-foreground">
                       <input
                         type="radio"
                         name="revenue"
@@ -187,10 +187,10 @@ const BookingSection = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
               <div>
-                <label className="block text-sm font-medium mb-1.5 text-background/80">CRM Used *</label>
+                <label className="block text-sm font-medium mb-1.5 text-foreground/90">CRM Used *</label>
                 <div className="space-y-2">
                   {CRM_OPTIONS.map((opt) => (
-                    <label key={opt} className="flex items-center gap-2 text-sm cursor-pointer text-background/80 hover:text-background">
+                    <label key={opt} className="flex items-center gap-2 text-sm cursor-pointer text-muted-foreground hover:text-foreground">
                       <input
                         type="radio"
                         name="crm"
@@ -207,18 +207,18 @@ const BookingSection = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-1.5 text-background/80">Primary Revenue Bottleneck *</label>
+              <label className="block text-sm font-medium mb-1.5 text-foreground/90">Primary Revenue Bottleneck *</label>
               <textarea
                 required
                 rows={3}
                 value={formData.bottleneck}
                 onChange={(e) => setFormData((p) => ({ ...p, bottleneck: e.target.value }))}
-                className="w-full px-3 py-2.5 bg-background/10 border border-background/20 rounded text-sm text-background placeholder:text-background/40 focus:outline-none focus:border-primary resize-none"
+                className="w-full px-3 py-2.5 bg-transparent border border-border rounded text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary resize-none"
                 placeholder="Briefly describe the biggest bottleneck in your revenue process"
               />
             </div>
 
-            <label className="flex items-start gap-3 text-sm cursor-pointer text-background/70 hover:text-background/90 py-2">
+            <label className="flex items-start gap-3 text-sm cursor-pointer text-muted-foreground hover:text-foreground py-2">
               <input
                 type="checkbox"
                 checked={formData.qualified}
@@ -242,7 +242,7 @@ const BookingSection = () => {
             </button>
           </form>
         ) : (
-          <div className="max-w-4xl mx-auto h-[700px] w-full bg-white rounded-lg overflow-hidden">
+          <div className="max-w-4xl mx-auto h-[700px] w-full bg-white rounded-lg overflow-hidden flex items-center justify-center">
             {/* 
               IMPORTANT: Replace the URL below with your actual Calendly event link!
               Pre-filling happens automatically with the prefill prop.

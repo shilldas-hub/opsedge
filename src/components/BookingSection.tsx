@@ -18,14 +18,17 @@ const MONTHS = ["January", "February", "March", "April", "May", "June", "July", 
 
 const BookingSection = () => {
   const [formData, setFormData] = useState({
+    name: "",
+    designation: "",
+    email: "",
+    companyLinkedin: "",
     companyName: "",
     websiteUrl: "",
+    companySize: "",
     revenueRange: "",
     crmUsed: "",
     bottleneck: "",
     qualified: false,
-    email: "",
-    name: "",
   });
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
@@ -39,14 +42,17 @@ const BookingSection = () => {
   const detectedTZ = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
   const isFormValid =
+    formData.name.trim() &&
+    formData.designation.trim() &&
+    formData.email.trim() &&
+    formData.companyLinkedin.trim() &&
     formData.companyName.trim() &&
     formData.websiteUrl.trim() &&
+    formData.companySize.trim() &&
     formData.revenueRange &&
     formData.crmUsed &&
     formData.bottleneck.trim() &&
-    formData.qualified &&
-    formData.email.trim() &&
-    formData.name.trim();
+    formData.qualified;
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
@@ -155,6 +161,20 @@ const BookingSection = () => {
                 />
               </div>
               <div>
+                <label className="block text-sm font-medium mb-1.5 text-background/80">Designation / Title *</label>
+                <input
+                  type="text"
+                  required
+                  value={formData.designation}
+                  onChange={(e) => setFormData((p) => ({ ...p, designation: e.target.value }))}
+                  className="w-full px-3 py-2.5 bg-background/10 border border-background/20 rounded text-sm text-background placeholder:text-background/40 focus:outline-none focus:border-primary"
+                  placeholder="e.g. Founder, VP of Sales"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
                 <label className="block text-sm font-medium mb-1.5 text-background/80">Email *</label>
                 <input
                   type="email"
@@ -163,6 +183,17 @@ const BookingSection = () => {
                   onChange={(e) => setFormData((p) => ({ ...p, email: e.target.value }))}
                   className="w-full px-3 py-2.5 bg-background/10 border border-background/20 rounded text-sm text-background placeholder:text-background/40 focus:outline-none focus:border-primary"
                   placeholder="you@company.com"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1.5 text-background/80">Company LinkedIn *</label>
+                <input
+                  type="url"
+                  required
+                  value={formData.companyLinkedin}
+                  onChange={(e) => setFormData((p) => ({ ...p, companyLinkedin: e.target.value }))}
+                  className="w-full px-3 py-2.5 bg-background/10 border border-background/20 rounded text-sm text-background placeholder:text-background/40 focus:outline-none focus:border-primary"
+                  placeholder="https://linkedin.com/company/..."
                 />
               </div>
             </div>
@@ -194,6 +225,17 @@ const BookingSection = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
+                <label className="block text-sm font-medium mb-1.5 text-background/80">Company Size *</label>
+                <input
+                  type="text"
+                  required
+                  value={formData.companySize}
+                  onChange={(e) => setFormData((p) => ({ ...p, companySize: e.target.value }))}
+                  className="w-full px-3 py-2.5 bg-background/10 border border-background/20 rounded text-sm text-background placeholder:text-background/40 focus:outline-none focus:border-primary"
+                  placeholder="e.g. 10-50, 50-200"
+                />
+              </div>
+              <div>
                 <label className="block text-sm font-medium mb-1.5 text-background/80">Revenue Range *</label>
                 <div className="space-y-2">
                   {REVENUE_OPTIONS.map((opt) => (
@@ -211,6 +253,9 @@ const BookingSection = () => {
                   ))}
                 </div>
               </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
               <div>
                 <label className="block text-sm font-medium mb-1.5 text-background/80">CRM Used *</label>
                 <div className="space-y-2">

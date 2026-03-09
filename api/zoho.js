@@ -74,11 +74,16 @@ export default async function handler(req, res) {
             data: [
                 {
                     Company: data.companyName,
-                    Last_Name: data.name, // Zoho requires Last_Name on Leads. If only name is given, we pass the whole name to Last_Name
+                    Last_Name: data.name, // Zoho requires Last_Name on Leads.
                     Email: data.email,
                     Website: formattedWebsite,
-                    Annual_Revenue: data.revenueRange ? parseInt(data.revenueRange.replace(/\D/g, '')) * 10000000 : null, // Simplistic conversion to handle '1-5 Cr' to numbers, or pass as string if using a custom field. 'Annual Revenue' is a currency/number field usually. We will map raw string to Description if it fails, or keep it standard. Actually Zoho's standard Annual Revenue is a number. Let's send the string to Description for now to be safe and avoid number parsing errors, or map to a custom field later.
-                    Description: `Revenue Range: ${data.revenueRange}\nCRM Used: ${data.crmUsed}\nPrimary Bottleneck: ${data.bottleneck}\nQualified: ${data.qualified ? 'Yes' : 'No'}`,
+                    Company_Domain: data.companySize,
+                    Company_LinkedIn1: data.companyLinkedin,
+                    Designation: data.designation,
+                    Annual_Revenue: data.revenueRange ? parseInt(data.revenueRange.replace(/\D/g, '')) * 10000000 : null,
+                    Revenue_Range: data.revenueRange,
+                    CRM_Used: data.crmUsed,
+                    Description: `Primary Bottleneck: ${data.bottleneck}\nQualified: ${data.qualified ? 'Yes' : 'No'}`,
                     Lead_Source: "Website Audit Form"
                 }
             ]

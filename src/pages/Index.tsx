@@ -31,8 +31,8 @@ const StickyHeader = () => {
           href="#book-audit"
           onClick={scrollToBooking}
           className={`inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium rounded transition-all ${scrolled
-              ? "bg-primary text-primary-foreground hover:opacity-90"
-              : "bg-foreground text-background hover:opacity-90"
+            ? "bg-primary text-primary-foreground hover:opacity-90"
+            : "bg-foreground text-background hover:opacity-90"
             }`}
         >
           Book Audit
@@ -227,17 +227,21 @@ const Index = () => {
           <h2 className="font-heading text-2xl md:text-3xl font-bold mb-10 text-center">
             Systems We Work Inside
           </h2>
-          <ul className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4 mb-10">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
             {platforms.map((p) => (
-              <li
+              <div
                 key={p.name}
-                className="flex items-center gap-2 text-lg md:text-xl font-medium text-foreground"
+                className="flex flex-col items-center justify-center p-6 md:p-8 rounded-xl bg-background border border-border shadow-sm hover:border-primary/50 hover:shadow-md hover:-translate-y-1 transition-all duration-300 group"
               >
-                <span className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />
-                {p.name}
-              </li>
+                <div className="w-12 h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                  <span className="font-heading text-xl font-bold">{p.letter}</span>
+                </div>
+                <span className="text-lg font-heading font-semibold text-foreground group-hover:text-primary transition-colors">
+                  {p.name}
+                </span>
+              </div>
             ))}
-          </ul>
+          </div>
           <div className="text-sm text-muted-foreground leading-relaxed space-y-3 text-center">
             <p>These are platforms we frequently architect and optimize inside.</p>
             <p>However, OpsEdge is not limited to specific tools.</p>

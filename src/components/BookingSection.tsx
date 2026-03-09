@@ -248,7 +248,7 @@ const BookingSection = () => {
               Pre-filling happens automatically with the prefill prop.
             */}
             <InlineWidget
-              url="https://calendly.com/admin-calendly-opsedge/meeting"
+              url="https://calendly.com/admin-calendly-opsedge/website-meeting"
               styles={{
                 height: '100%',
                 width: '100%'
